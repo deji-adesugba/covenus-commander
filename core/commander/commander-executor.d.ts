@@ -1,4 +1,4 @@
-import { CliProgram } from './injector/program';
+import { CliProgram } from '../injector/program';
 import { CommanderBase } from './commander-base';
 import { CommanderExceptionTraps } from './commander-exception-traps'
 

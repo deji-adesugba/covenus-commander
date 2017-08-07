@@ -1,5 +1,6 @@
 import { CLIArgument, OptionalArg, RequiredArg, UseTraps } from '../../../../common';
-import { BombTrap, BombNotFoundException, DudBomdException } from '../../traps/bomb-squad/bomb.trap';
+import { BombNotFoundException, DudBombException } from '../../traps/exceptions/bomb.exception';
+import { BombCommandTrap } from '../../traps/bomb-squad/bomb.trap';
 
 /*
 
@@ -7,7 +8,7 @@ import { BombTrap, BombNotFoundException, DudBomdException } from '../../traps/b
 @CLIArgument({
     requiredArgs: ['bomb-type'],   //this equals <bomb> meaning required flag argument
 })
-@UseTraps(BombTrap)
+@UseTraps(BombCommandTrap)
 export class BombArgument
 {
     /*
@@ -24,7 +25,7 @@ export class BombArgument
     execute(@RequiredArg('bomb-type') bombType){
          bombType = bombType;
         if(bombType == 'c4' || bombType == 'hydrogen'){
-            throw new DudBomdException();
+            throw new DudBombException();
         }else{
             throw new BombNotFoundException();
         }

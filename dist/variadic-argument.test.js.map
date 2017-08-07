@@ -1,0 +1,1 @@
+{"version":3,"file":"variadic-argument.test.js","sourceRoot":"","sources":["../src/tests/variadic-argument.test.ts"],"names":[],"mappings":";;;;;;;;AAAA,yCAA0C;AAC1C,8EAA0E;AAM1E,IAAa,gBAAgB,GAA7B;CACC,CAAA;AADY,gBAAgB;IAJ5B,mBAAU,CAAC;QACR,QAAQ,EAAE,CAAC,4BAAY,CAAC;QACxB,OAAO,EAAE,OAAO;KACnB,CAAC;GACW,gBAAgB,CAC5B;AADY,4CAAgB"}

@@ -1,4 +1,4 @@
-import { ExceptionsHandler } from '../exceptions/exceptions-handler';
+import { ExceptionsHandler } from '../exceptions/exception-handler';
 
 import * as program from "commander";
 type ProgramCommander = program.CommanderStatic;

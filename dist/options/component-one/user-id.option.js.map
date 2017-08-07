@@ -1,0 +1,1 @@
+{"version":3,"file":"user-id.option.js","sourceRoot":"","sources":["../../../src/tests/options/component-one/user-id.option.ts"],"names":[],"mappings":";;;;;;;;AAAA,+CAA+C;AAS/C,IAAa,YAAY,GAAzB;CAA2B,CAAA;AAAd,YAAY;IAPxB,kBAAS,CAAC;QACP,SAAS,EAAE,GAAG;QACd,QAAQ,EAAE,SAAS;QACnB,OAAO,EAAE,IAAI;QACb,iBAAiB,EAAE,IAAI;QACvB,WAAW,EAAE,eAAe;KAC/B,CAAC;GACW,YAAY,CAAE;AAAd,oCAAY"}

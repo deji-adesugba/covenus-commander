@@ -1,0 +1,1 @@
+{"version":3,"file":"git-style.test.js","sourceRoot":"","sources":["../src/tests/git-style.test.ts"],"names":[],"mappings":";;;;;;;;AAAA,yCAA0C;AAC1C,oDAAkF;AAMlF,IAAa,QAAQ,GAArB;CACC,CAAA;AADY,QAAQ;IAJpB,mBAAU,CAAC;QACR,QAAQ,EAAE,CAAC,0BAAc,EAAE,yBAAa,EAAE,uBAAW,CAAC;QACtD,OAAO,EAAE,OAAO;KACnB,CAAC;GACW,QAAQ,CACpB;AADY,4BAAQ"}

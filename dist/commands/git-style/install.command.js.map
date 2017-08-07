@@ -1,0 +1,1 @@
+{"version":3,"file":"install.command.js","sourceRoot":"","sources":["../../../src/tests/commands/git-style/install.command.ts"],"names":[],"mappings":";;;;;;;;AAAA,+CAAgD;AAQhD,IAAa,cAAc,GAA3B;CAEC,CAAA;AAFY,cAAc;IAN1B,mBAAU,CAAC;QACR,IAAI,EAAE,SAAS;QACf,YAAY,EAAE,CAAC,MAAM,CAAC;QACtB,eAAe,EAAE,8BAA8B;QAC/C,sBAAsB,EAAE,KAAK;KAChC,CAAC;GACW,cAAc,CAE1B;AAFY,wCAAc"}

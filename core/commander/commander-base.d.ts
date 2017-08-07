@@ -1,4 +1,4 @@
-import { CliProgram } from './injector/program';
+import { CliProgram } from '../injector/program';
 
 export declare class CommanderBase{
     private readonly program;

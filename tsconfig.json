@@ -13,8 +13,7 @@
     },
     "include": [
         "src/**/*.ts",
-        "common/**/*.ts",
-        "core/**/*.ts"
+        "common/**/*.ts"
     ],
     "exclude": [
         "node_modules",

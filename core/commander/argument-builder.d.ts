@@ -1,4 +1,4 @@
-import { CliProgram } from './injector/program';
+import { CliProgram } from '../injector/program';
 import { CommanderBuilder } from './commander-builder';
 import { ArgumentResults } from './commander-reflector';
 
