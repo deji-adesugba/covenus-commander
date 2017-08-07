@@ -1,0 +1,1 @@
+{"version":3,"file":"exec-mode.option.js","sourceRoot":"","sources":["../../../../src/tests/options/example/exec-mode.option.ts"],"names":[],"mappings":";;;;;;;;AAAA,+CAA+C;AAS/C,IAAa,cAAc,GAA3B;CAEC,CAAA;AAFY,cAAc;IAP1B,kBAAS,CAAC;QACP,SAAS,EAAE,GAAG;QACd,QAAQ,EAAE,WAAW;QACrB,OAAO,EAAE,MAAM;QACf,iBAAiB,EAAE,IAAI;QACvB,WAAW,EAAE,wBAAwB;KACxC,CAAC;GACW,cAAc,CAE1B;AAFY,wCAAc"}

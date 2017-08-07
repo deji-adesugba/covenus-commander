@@ -1,0 +1,1 @@
+{"version":3,"file":"config.option.js","sourceRoot":"","sources":["../../../../src/tests/options/example/config.option.ts"],"names":[],"mappings":";;;;;;;;AAAA,+CAA+C;AAS/C,IAAa,YAAY,GAAzB;CAEC,CAAA;AAFY,YAAY;IAPxB,kBAAS,CAAC;QACP,SAAS,EAAE,GAAG;QACd,QAAQ,EAAE,QAAQ;QAClB,OAAO,EAAE,MAAM;QACf,iBAAiB,EAAE,IAAI;QACvB,WAAW,EAAE,4CAA4C;KAC5D,CAAC;GACW,YAAY,CAExB;AAFY,oCAAY"}

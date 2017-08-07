@@ -1,0 +1,1 @@
+{"version":3,"file":"optional.option.js","sourceRoot":"","sources":["../../../../src/tests/options/coercion/optional.option.ts"],"names":[],"mappings":";;;;;;;;AAAA,+CAA+C;AAS/C,IAAa,cAAc,GAA3B;CAEC,CAAA;AAFY,cAAc;IAP1B,kBAAS,CAAC;QACP,SAAS,EAAE,GAAG;QACd,QAAQ,EAAE,UAAU;QACpB,OAAO,EAAE,OAAO;QAChB,iBAAiB,EAAE,KAAK;QACxB,WAAW,EAAE,mBAAmB;KACnC,CAAC;GACW,cAAc,CAE1B;AAFY,wCAAc"}

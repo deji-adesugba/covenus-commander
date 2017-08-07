@@ -1,0 +1,1 @@
+{"version":3,"file":"default.command.js","sourceRoot":"","sources":["../../../../src/tests/commands/example/default.command.ts"],"names":[],"mappings":";;;;;;;;AAAA,+CAAgD;AAKhD,IAAa,cAAc,GAA3B;IAII,OAAO;QACH,OAAO,CAAC,GAAG,CAAC,sCAAsC,CAAC,CAAC;IACxD,CAAC;CACJ,CAAA;AAPY,cAAc;IAH1B,mBAAU,CAAC;QACR,IAAI,EAAE,GAAG;KACZ,CAAC;GACW,cAAc,CAO1B;AAPY,wCAAc"}

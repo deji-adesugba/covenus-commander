@@ -1,0 +1,5 @@
+# my typescript outputdir
+dist/
+
+# my src files for test classes
+src/
