@@ -23,5 +23,13 @@
   },
   "peerDependencies": {
     "reflect-metadata": "^0.1.10"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deji-adesugba/covenus-commander.git"
+  },
+  "bugs": {
+    "url": "https://github.com/deji-adesugba/covenus-commander/issues"
+  },
+  "homepage": "https://github.com/deji-adesugba/covenus-commander#readme"
 }
