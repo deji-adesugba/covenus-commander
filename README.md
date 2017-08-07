@@ -1,9 +1,8 @@
-# coven-commander
+# covenus-commander
 Modern, powerful command-line application framework for Node.js using typescript or ES6, inspired by commander, nestjs and angular
 
- [![NPM Version][npm-image]][npm-url]
-  [![NPM Downloads][downloads-image]][downloads-url]
-  [![Linux][linux-image]][linux-url]
+ [![NPM Version](http://img.shields.io/npm/v/covenus-commander.svg?style=flat)](https://www.npmjs.org/package/covenus-commander)
+[![NPM Downloads](https://img.shields.io/npm/dm/covenus-commander.svg?style=flat)](https://www.npmjs.org/package/covenus-commander)
 
 ## Description
 
