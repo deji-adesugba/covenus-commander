@@ -353,7 +353,7 @@ export class RMDirCommand{
 
         By default, if a required argument is not passed in from the command-line, 
         the coven runtime will respond with a message demanding the argument be passed
-        subsequently, so no need to test the 'cmdValue' parameter if its set
+        subsequently, so no need to test the 'dir' parameter if its set
         While, a variadic argument needs to be tested before use, if(otherDirs){}
     */
     execute(@RequiredArg('dir') dir, @VariadicArg('otherDirs') otherDirs){
@@ -386,6 +386,67 @@ export class VariadicArgument{
 }
 
 const app = CovenFactory.createCLI(VariadicArgument);
+app.run();
+
+```
+
+## Specify the argument syntax
+
+The argument-based approach can also be defined by its own `@CLIArgument` decorator, that defines its own metadata to support the underlying [Commander](https://github.com/tj/commander.js) argument syntax feature.  Here is an example:
+
+```js
+
+import { CLIArgument, OptionalArg, RequiredArg } from 'covenus-commander';
+
+@CLIArgument({
+    requiredArgs: ['cmd'],   //this equals <cmd> meaning required flag argument
+    optionalArgs: ['env']   //this equals [env] meaning optional flag argument
+})
+export class CMDArgument
+{
+    /*
+        The execute method is invoked when the arguments matching this class are detected in the command line arguments parsed by the framework
+        
+        use @RequiredArg parameter decorator to access required arguments listed in 'requiredArgs' metadata property
+        use @OptionalArg parameter decorator to access optional arguments listed in 'optionalArgs' metadata property
+
+        By default, if a required argument is not passed in from the command-line, 
+        the coven runtime will respond with a message demanding the argument be passed
+        subsequently, so no need to test the 'cmdValue' parameter if its set
+        While, an optional argument needs to be tested before use, if(envValue){}
+    */
+    execute(@RequiredArg('cmd') cmdValue, @OptionalArg('env') envValue){
+        console.log('----- Argument Syntax Example -----');
+        console.log(' ');
+        console.log('command:', cmdValue);
+        console.log('environment:', envValue || "no environment given");
+    }
+
+     onHelp(output){
+        output.writeLine(' Examples:');
+        output.writeLine('');
+        output.writeLine('   $ run cmd env');
+        output.writeLine('   $ run drop table');
+    }
+}
+
+```
+The required input arguments are the ones indicated within the `requiredArgs` metadata property of the `@CLIArgument`, while the optional input arguments are the ones indicated within the `optionalArgs` metadata property.
+
+```js
+#!/usr/bin/env node
+
+import { CLIProgram, CovenFactory } from 'covenus-commander';
+
+@CLIProgram({
+    argument: CMDArgument,  //your cli app argument class that executes based on your command line required & optional arguments
+    version: '0.1.0'   //your cli app version number will be displayed with help output
+})
+export class ArgumentSyntax{
+}
+
+
+const app = CovenFactory.createCLI(ArgumentSyntax);
 app.run();
 
 ```
