@@ -451,4 +451,58 @@ app.run();
 
 ```
 
- 
+ ## Git-style sub-commands
+
+```js
+// file: ./examples/pm
+
+import { CLICommand } from 'covenus-commander';
+
+@CLICommand({
+    verb: 'install',               //this is the command verb that triggers this command from the cli
+    optionalArgs: ['name'],       //this equals [name] meaning optional flag argument
+    verbDescription: 'install one or more packages', //setting 'verbDescription' makes this command a git-style sub-command, so no 'execute' method will be run
+    includeInHelpByDefault: false //this command's options details will not be displayed with default generated help text
+})
+export class InstallCommand{}
+
+@CLICommand({
+    verb: 'list',               //this is the command verb that triggers this command from the cli
+    verbDescription: 'list packages installed', //setting 'verbDescription' makes this command a git-style sub-command, so no 'execute' method will be run
+    verbOption: { isDefault: true},  //verbOption can contain both 'isDefault' and 'noHelp', 'isDefault' makes it the default command if none is specified on the commandline, while 'noHelp' will remove it from the generated help output
+})
+export class ListCommand{}
+
+@CLICommand({
+    verb: 'search',               //this is the command verb that triggers this command from the cli
+    optionalArgs: ['query'],       //this equals [query] meaning optional flag argument
+    verbDescription: 'search with optional query' //setting 'verbDescription' makes this command a git-style sub-command, so no 'execute' method will be run
+})
+export class SearchCommand{}
+
+```
+
+```js
+#!/usr/bin/env node
+
+import { CLIProgram, CovenFactory } from 'covenus-commander';
+
+@CLIProgram({
+    commands: [InstallCommand, SearchCommand, ListCommand],  //your cli app command classes are listed under 'commands
+    version: '0.1.0'   //your cli app version number will be displayed with help output
+})
+export class GitStyle{
+}
+
+
+const app = CovenFactory.createCLI(GitStyle);
+app.run();
+
+```
+
+When a command class defined with `@CLICommand` is intended to be used as a sub-command, it must have its `verbDescription` metadata property defined. this indicates to the covenus-commander framework that this command does not intend to have an `execute` method invoked within it, but rather it should trigger the search for matching sub-command separate executables, much like `git(1)` and other popular tools. So no `execute` should be defined within the command class to handle its execution.  
+Covenus-commander will fallback to [Commander](https://github.com/tj/commander.js), who will try to search the executables in the directory of the entry script (like `./examples/pm`) with the name `program-command`, like `pm-install`, `pm-search`.
+
+Specifying `true` for the `isDefault` property on the `verbOption` metadata property will run the subcommand by default if no subcommand is specified as a command-line argument on the console.
+
+If the command-line program is designed to be installed globally, make sure the executables have proper file-access modes, like `755`.
