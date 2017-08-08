@@ -278,3 +278,56 @@ app.run();
 
 
 ```
+
+## Regular Expression
+```js
+
+import { CLIOption } from 'covenus-commander';
+
+@CLIOption({
+    shortFlag: 'd',           //this can be set to '-d' also
+    fullFlag: 'drink',        //this can also be set to '--drink'
+    flagArg: 'drink',         //must add 'flagArg' field when using 'flagArgValueRegExp' for regular expression validation
+    flagArgValueRegExp: /^(coke|pepsi|isse)$/i,  //regular expression to match the argument against(always include 'flagArg')
+    flagArgValueHintForRegExp: 'accepted values are coke, pepsi or isse', //this hint will be displayed when an invalid value is passed as an argument
+    description: 'Drink'
+})
+export class DrinkOption{}
+
+@CLIOption({
+    shortFlag: 's',          //this can be set to '-s' also
+    fullFlag: 'size',        //this can also be set to '--size'
+    flagArg: 'size',         //must add 'flagArg' field when using 'flagArgValueRegExp' for regular expression validation
+    flagArgValueRegExp: /^(large|medium|small)$/i,  //regular expression to match the argument against(always include 'flagArg')
+    flagArgValueHintForRegExp: 'accepted values are large, medium or small',  //this hint will be displayed when an invalid value is passed as an argument
+    description: 'Pizza size'
+})
+export class SizeOption{}
+```
+
+```js
+
+
+#!/usr/bin/env node
+
+import { CLIProgram, CovenFactory } from 'covenus-commander';
+
+@CLIProgram({
+    options: [DrinkOption, SizeOption], //your cli app option classes that modify the behaviour of your app commands or argument
+    version: '0.1.0'    //your cli app version number will be displayed with help output
+})
+export class RegularExpression{
+    run(options){
+        console.log('----- RegExp Example -----');
+        console.log(' ');
+        console.log(' size: %j', options.size);
+        console.log(' drink: %j', options.drink);
+    }
+}
+
+
+
+const app = CovenFactory.createCLI(RegularExpression);
+app.run();
+
+```
