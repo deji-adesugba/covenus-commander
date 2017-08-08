@@ -82,6 +82,29 @@ app.run();
 ```
 Remember that [Covenus-commander]() is built on the popular [Commander](https://github.com/tj/commander.js), so its underlying framework benefits translate over. So the short flags of the individual options may be passed as a single arg, for example `-abc` is equivalent to `-a -b -c`. And multi-word options such as "--bbq-sauce" are camel-cased, becoming `options.bbqSauce` when checking if the option flag was set etc.
 
+## Automated --help
+
+ The help information is auto-generated based on the information you've afforded covenus-commander already through the metadata annotations (e.g. `@CLIOption`, `@CLICommand`, `@CLIArgument`) it provides by default, so the following help info is generated for free by the underlying framework once you pass the `--help` flag on the command-line console:
+
+```  
+ $ ./examples/pizza --help
+
+   Usage: pizza [options]
+
+   An application for pizzas ordering
+
+   Options:
+
+     -h, --help           output usage information
+     -V, --version        output the version number
+     -p, --peppers        Add peppers
+     -P, --pineapple      Add pineapple
+     -b, --bbq            Add bbq sauce
+     -c, --cheese <type>  Add the specified type of cheese [marble]
+     -C, --no-cheese      You do not want any cheese
+
+```
+
 ## Coercion
 
 ```js
@@ -506,3 +529,88 @@ Covenus-commander will fallback to [Commander](https://github.com/tj/commander.j
 Specifying `true` for the `isDefault` property on the `verbOption` metadata property will run the subcommand by default if no subcommand is specified as a command-line argument on the console.
 
 If the command-line program is designed to be installed globally, make sure the executables have proper file-access modes, like `755`.
+
+## Custom help
+
+ You can display your own  arbitrary extra help information
+ by implementing the `onExtraHelpInfo` method in your command-line program class. So in addition to the default help text generated for your program's options(`@CLIOption`), commands(`@CLICommand`) or argument(`@CLIArgument`) classes, you can include your own custom help text in the help output generated when
+ `--help` is used on the console.
+
+```js
+import { CLIOption } from 'covenus-commander';
+
+@CLIOption({
+    shortFlag: 'b',   //this can be set to '-b' also
+    fullFlag: 'bar',  //this can also be set to '--bar'
+    description: 'enable some bar'
+})
+export class BarOption{}
+
+@CLIOption({
+    shortFlag: 'B',   //this can be set to '-B' also
+    fullFlag: 'baz',  //this can also be set to '--baz'
+    description: 'enable some baz'
+})
+export class BazOption{}
+
+@CLIOption({
+    shortFlag: 'f',   //this can be set to '-f' also
+    fullFlag: 'foo',  //this can also be set to '--foo'
+    description: 'enable some foo'
+})
+export class FooOption{}
+```
+
+```js
+
+#!/usr/bin/env node
+
+import { CLIProgram, CovenFactory } from 'covenus-commander';
+
+@CLIProgram({
+    options: [FooOption, BarOption, BazOption],   //your cli app option classes that modify the behaviour of your app commands or argument
+    version: '0.1.0'   //your cli app version number will be displayed with help output
+})
+export class CustomHelp{
+    /*
+        adding the 'onExtraHelpInfo' function to your cli program class allows you
+        to output additional help info alongside the the generated help output when your
+        app is called with '-h' or '--help' flag
+    */
+    onExtraHelpInfo(output){
+        output.writeLine('');
+        output.writeLine('');
+        output.writeLine('----- Custom Help Example -----');
+        output.writeLine('');
+        output.writeLine('    $ custom-help --help');
+        output.writeLine('    $ custom-help -h');
+        output.writeLine('');
+    }
+}
+
+
+const app = CovenFactory.createCLI(CustomHelp);
+app.run();
+
+```
+
+Yields the following help output when `node script-name.js -h` or `node script-name.js --help` are run:
+
+```
+
+Usage: custom-help [options]
+
+Options:
+
+  -h, --help     output usage information
+  -V, --version  output the version number
+  -f, --foo      enable some foo
+  -b, --bar      enable some bar
+  -B, --baz      enable some baz
+
+----- Custom Help Example -----
+
+  $ custom-help --help
+  $ custom-help -h
+
+```
