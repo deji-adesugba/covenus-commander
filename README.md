@@ -679,3 +679,158 @@ app.run();
 
 ```
 
+## Examples
+
+```js
+import { CLIOption, CLICommand } from 'covenus-commander';
+
+@CLIOption({
+    shortFlag: 'C',           //this can be set to '-C' also
+    fullFlag: 'chdir',   //this can also be set to '--chdir'
+    flagArg: 'path',          //this signifies this option is more than a flag, there is an argument needed for it
+    isFlagArgRequired: true, //the flag argument is required <path>, not optional
+    description: 'change the working directory',  //the description that is output as its generated help info
+})
+export class ChDirOption{}
+
+@CLIOption({
+    shortFlag: 'c',           //this can be set to '-c' also
+    fullFlag: 'config',   //this can also be set to '--config'
+    flagArg: 'path',          //this signifies this option is more than a flag, there is an argument needed for it
+    isFlagArgRequired: true, //the flag argument is required <path>, not optional
+    description: 'set config path. defaults to ./deploy.conf',  //the description that is output as its generated help info
+})
+export class ConfigOption{}
+
+@CLIOption({
+    shortFlag: 'e',           //this can be set to '-e' also
+    fullFlag: 'exec_mode',   //this can also be set to '--exec_mode'
+    flagArg: 'mode',          //this signifies this option is more than a flag, there is an argument needed for it
+    isFlagArgRequired: true, //the flag argument is required <mode>, not optional
+    description: 'Which exec mode to use',  //the description that is output as its generated help info
+})
+export class ExecModeOption{}
+
+@CLIOption({
+    shortFlag: 's',           //this can be set to '-s' also
+    fullFlag: 'setup_mode',   //this can also be set to '--setup_mode'
+    flagArg: 'mode',          //this signifies this option is more than a flag, there is an argument needed for it
+    isFlagArgRequired: false, //the flag argument is optional [mode], not required
+    description: 'Which setup mode to use',  //the description that is output as its generated help info
+    defaultValue: 'normal'    //if you want to have a default value, incase no argument is passed in for the option
+})
+export class SetupModeOption{}
+
+@CLIOption({
+    shortFlag: 'T',           //this can be set to '-T' also
+    fullFlag: 'no-tests',   //this can also be set to '--no-tests'
+    description: 'ignore test hook',  //the description that is output as its generated help info
+})
+export class NoTestsOption{}
+
+@CLICommand({
+    verb: 'setup',               //this is the command verb that triggers this command from the cli
+    optionalArgs: ['env'],       //this equals [env] meaning optional flag argument
+    commandDescription: 'run setup commands for all envs',  //this sets the command's help description text
+    options: [SetupModeOption],   //your command option classes that modify the command
+    //includeInHelpByDefault: false //this command's options details will not be displayed with default generated help text
+})
+export class SetupCommand{
+    /*
+        The execute method is invoked when the command verb is detected in the command line arguments parsed by the framework
+        use @OptionalArg parameter decorator to access optional arguments listed in 'optionalArgs' metadata property
+        use @CommandOptionArg parameter decorator to access the value of the options set in the 'options' metadata property of your command class, in this case its the 'setup_mode' defined above
+        use @ProgramOptionArg parameter decorator to access the value of the options set in the 'options' metadata property of your program class, in this case its the 'config' set in the program class of this command
+
+    */
+    execute(@OptionalArg('env') env, @CommandOptionArg('setup_mode') mode, @ProgramOptionArg('config') config){
+        env = env || 'all';
+        console.log('setup for %s env(s) with %s mode and config %s', env, mode, config);
+    }
+
+    onHelp(output){
+        output.writeLine(' Examples:');
+        output.writeLine('');
+        output.writeLine('   $ deploy setup normal');
+        output.writeLine('   $ deploy setup priviledged');
+    }
+}
+
+@CLICommand({
+    verb: 'exec',               //this is the command verb that triggers this command from the cli
+    requiredArgs: ['cmd'],       //this equals <cmd> meaning required flag argument
+    commandDescription: 'execute the given remote cmd',  //this sets the command's help description text
+    options: [ExecModeOption],   //your command option classes that modify the command
+    alias: 'ex',                  //an alias can be used to trigger the command along with its verb
+    //includeInHelpByDefault: false //this command's options details will not be displayed with default generated help text
+})
+export class ExecCommand{
+    /*
+        The execute method is invoked when the command verb is detected in the command line arguments parsed by the framework
+        use @RequiredArg parameter decorator to access required arguments listed in 'requiredArgs' metadata property
+        use @CommandOptionArg parameter decorator to access the value of the options set in the 'options' metadata property
+        
+    */
+    execute(@RequiredArg('cmd') cmd, @CommandOptionArg('exec_mode') mode){
+
+        console.log('exec "%s" using %s mode', cmd, mode);
+    }
+
+    onHelp(output){
+        output.writeLine(' Examples:');
+        output.writeLine('');
+        output.writeLine('   $ deploy exec sequential');
+        output.writeLine('   $ deploy exec async');
+        output.writeLine('');
+    }
+}
+
+@CLICommand({
+    verb: '*',   //this wildcard command verb is the default command executed when unknown command verbs are passed in but the framework handles unknown commands for you, reporting them as such by default when encountered
+})
+export class DefaultCommand{
+    /*
+        The execute method is invoked when the command verb is detected in the command line arguments parsed by the framework
+    */
+    execute(){
+        console.log('deploying with default configuration');
+    }
+}
+
+
+```
+```js
+
+#!/usr/bin/env node
+
+import { CLIProgram, CovenFactory } from 'covenus-commander';
+
+@CLIProgram({
+    options: [ChDirOption, ConfigOption, NoTestsOption],
+    commands: [SetupCommand, ExecCommand, DefaultCommand], //your cli app command classes are listed under 'commands
+    version: '0.1.0'          //your cli app version number will be displayed with help output
+})
+export class Example{
+     /*
+        adding the 'onExtraHelpInfo' function to your cli program class allows you
+        to output additional help info alongside the the generated help output when your
+        app is called with '-h' or '--help' flag
+    */
+    onExtraHelpInfo(output){
+        output.writeLine('');
+        output.writeLine('');
+    }
+}
+
+
+const app = CovenFactory.createCLI(Example);
+app.run();
+
+
+```
+More Demos can be found in the [tests](https://github.com/deji-adesugba/covenus-commander/tree/master/src/tests) directory.
+
+## License
+
+MIT
+
