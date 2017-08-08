@@ -31,5 +31,11 @@
   "bugs": {
     "url": "https://github.com/deji-adesugba/covenus-commander/issues"
   },
-  "homepage": "https://github.com/deji-adesugba/covenus-commander#readme"
+  "homepage": "https://github.com/deji-adesugba/covenus-commander#readme",
+  "maintainers": [
+    {
+      "name": "deji.adesugba",
+      "email": "deji.adesugba@covensoft.com"
+    }
+  ]
 }
