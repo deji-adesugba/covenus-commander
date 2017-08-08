@@ -614,3 +614,68 @@ Options:
   $ custom-help -h
 
 ```
+## .displayHelp(method)
+
+To output the application's help information without explicitly passing the `--help` flag on the command-line. The implictly defined `displayHelp()` method of your `@CLIProgram` decorated program class can be invoked to output your program's help information. Also, there is an optional method `onCustomizeHelpBeforeDisplay(helpText)` you can implement within your program class to allow post-processing of help text before it is displayed.
+
+If you want your program to display it's help information by default (e.g. if no command or arguments are supplied on the command-line), you just include the `showHelpByDefault: true` metadata property in your program class `@CLIProgram` decorator's supplied metadata object:
+
+```js
+
+import { CLIOption } from 'covenus-commander';
+
+@CLIOption({
+    shortFlag: 'm',         //this can be set to '-m' also
+    fullFlag: 'message',  //this can also be set to '--message'
+    description: 'message to display as help'
+})
+export class MessageOption{}
+
+```
+
+```js
+
+#!/usr/bin/env node
+
+import { CLIProgram, CovenFactory } from 'covenus-commander';
+
+@CLIProgram({
+    options: [MessageOption],  //your cli app option classes that modify the behaviour of your app commands or argument
+    version: '0.1.0'   //your cli app version number will be displayed with help output
+    //showHelpByDefault: true //your cli app will always first output its help info by default when it launches regardless of whatever command or argument is actually invoked
+})
+export class OutputHelp{
+    run(options){
+        console.log('----- Output Help Example -----');
+        console.log(' ');
+        if(options.message){
+            /*
+               the 'displayHelp' function is automatically injected into your @CliProgram class
+               use it to trigger the output of the app's generated help output to the command line
+               without exiting or using the '-h' or '--help' flag.
+            */
+            this.displayHelp(); 
+        }else{
+            console.log(' No message passed in');
+        }
+    }
+
+    /*
+        the 'onCustomizeHelpBeforeDisplay' function if present in your @CliProgram class 
+        is automatically used by the 'displayHelp' to enable you customize the help output
+        before it is sent to the command line
+        Perhaps change the color of the text or do some manipulation of the text
+    */
+    onCustomizeHelpBeforeDisplay(helpText){
+        var myCustomMessage = "\n  My Custom Message  \n\n\n";
+        return helpText.concat(myCustomMessage);
+    }
+}
+
+
+const app = CovenFactory.createCLI(OutputHelp);
+app.run();
+
+
+```
+
