@@ -1,6 +1,6 @@
 {
   "name": "covenus-commander",
-  "version": "1.0.0-rc1",
+  "version": "1.0.1-rc1",
   "description": "Modern, powerful command-line application framework for Node.js using Typescript or ES6, built on Commander and, inspired by Nestjs and Angular",
   "main": "index.js",
   "engines": {
