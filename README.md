@@ -325,9 +325,69 @@ export class RegularExpression{
     }
 }
 
-
-
 const app = CovenFactory.createCLI(RegularExpression);
 app.run();
 
 ```
+
+## Variadic arguments
+
+Commands can be defined by their own `@CLICommand` decorator, that defines its own metadata argument to support the underlying [Commander](https://github.com/tj/commander.js) features. One of which is the last variadic argument support for a command.  Here is an example:
+
+```js
+
+import { CLICommand, VariadicArg, RequiredArg } from 'covenus-commander';
+
+
+@CLICommand({
+    verb: 'rmdir',               //this is the command verb that triggers this command from the cli
+    requiredArgs: ['dir'],       //this equals <dir> meaning required flag argument
+    variadicLastArg: 'otherDirs' //this equals [otherDirs...] meaning the last argument of the command is variadic
+})
+export class RMDirCommand{
+    /*
+        The execute method is invoked when the command verb is detected in the command line arguments parsed by the framework
+        
+        use @RequiredArg parameter decorator to access required arguments listed in 'requiredArgs' metadata property
+        use @VariadicArg parameter decorator to access the last variadic argument set in the 'variadicLastArg' metadata property
+
+        By default, if a required argument is not passed in from the command-line, 
+        the coven runtime will respond with a message demanding the argument be passed
+        subsequently, so no need to test the 'cmdValue' parameter if its set
+        While, a variadic argument needs to be tested before use, if(otherDirs){}
+    */
+    execute(@RequiredArg('dir') dir, @VariadicArg('otherDirs') otherDirs){
+        console.log('----- Variadic Argument Example -----');
+        console.log(' ');
+        console.log('rmdir %s', dir);
+        if (otherDirs) {
+            otherDirs.forEach(function (oDir) {
+                console.log('rmdir %s', oDir);
+            });
+        }
+    }
+}
+
+```
+
+The `otherDirs` second parameter argument of the command class's `execute` method represents the variadic argument, and an `Array` is used for the value of a variadic argument. This is the parameter argument all the extra command-line arguments will be passed to.
+
+```js
+
+#!/usr/bin/env node
+
+import { CLIProgram, CovenFactory } from 'covenus-commander';
+
+@CLIProgram({
+    commands: [RMDirCommand], //your cli app command classes are listed under 'commands
+    version: '0.1.0'          //your cli app version number will be displayed with help output
+})
+export class VariadicArgument{
+}
+
+const app = CovenFactory.createCLI(VariadicArgument);
+app.run();
+
+```
+
+ 
