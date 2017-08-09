@@ -830,6 +830,119 @@ app.run();
 ```
 More Demos can be found in the [tests](https://github.com/deji-adesugba/covenus-commander/tree/master/src/tests) directory.
 
+## Dependency Injection
+
+Covenus-commander ships with its own dependency injection system to facilitate the building of self-contained and self-managed command-line applications. It adds the notion of component classes that are defined and then associated with your command-line program through its `@CLIProgram` decorator. Then instances of these components can be automatically injected into the program's command(`@CLICommand`), argument(`@CLIArgument`) and option(`@CLIOption`) class constructors by the covenus-commander's DI framework. 
+
+## Custom Components
+
+To add a component to your command-line program(`@CLIProgram`), first define the component class with a component decorator of its own:
+
+```js
+
+@Component()
+export class UserService{
+    ...
+}
+
+```
+Then associate the component's class with your program's decorator through its `components` metadata property.
+
+```js
+@CLIProgram({
+    options: [...],
+    commands: [...],
+    version: '...',
+    components: [UserService]   //your cli app components used by your commands, arguments or options must be listed here, so they can be resolved and injected
+    
+})
+export class UsersProgram{}
+```
+
+And like [Angular](https://github.com/angular/angular) and [Nest](https://github.com/kamilmysliwiec/nest), you can also inject your components using other mechanisms.Such as:
+
+## By Value:
+Sometimes what component you have to inject isn't class-based, simply just a javascript value or object type. In such cases you can use:
+
+```js
+const val = {}
+
+@CLIProgram({
+    options: [...],
+    commands: [...],
+    version: '...',
+    components: [{provide: 'UserService', useValue: val}]
+})
+
+```
+Now the DI framework will associate the `val` object with the string-based metatype `'UserService'`. This is also useful when you need test doubles(unit testing). E.g when your class-based metatype isn't ready, you can use a value based metatype instead then substitute it out once ready.
+
+## By Class:
+Sometimes when using a class-based metatype for your component you may want to use a derived sub-class or a class with a different implentation of the original class type used as the component's metatype
+
+```js
+@Component()
+class CustomUserService{}
+
+@CLIProgram({
+    options: [...],
+    commands: [...],
+    version: '...',
+    components: [{provide: UserService, useClass: CustomUserService}]
+})
+
+```
+
+## By Factory:
+Sometimes when you want to use a component that depends on some other component or package or asyncronously retrieved value(`Observable` or `Promise`) itself during its instantiation, you will use the factory method to associate it with your program
+
+```js
+@Component()
+class GroupService{}
+
+
+@CLIProgram({
+    options: [...],
+    commands: [...],
+    version: '...',
+    components: [{provide: UserService, 
+    useFactory: (groupService) => {
+        return groupService.getUserServiceByGroup('admin');},
+    inject: [ GroupService ]}]
+})
+
+```
+When using factory-based method, to use a fellow component as one of its dependencies you must include that component used in the `inject` property of its metadata, so the DI framework knows to inject it into your factory callback.
+
+## By Custom Providers:
+Sometimes you want to inject a custom value(or even class or factory based) into a component, command, argument, or option by yourself. In such cases, you'll use a custom provider.
+
+```js
+@CLIProgram({
+    options: [...],
+    commands: [...],
+    version: '...',
+    components: [{provide: 'isLinuxEnvironment', useValue: false}]
+})
+
+```
+Now to inject this component defined with this custom provider metatype key `isLinuxEnvironment`, just use the `@Inject` parameter decorator in the component, command, argument or option's class constructor.
+
+```js
+
+import { Inject } from 'covenus-commander';
+
+@Component()
+class EnvironmentService{
+    constructor(@Inject('isLinuxEnvironment') isLinuxEnvironment: boolean)
+    {
+        console.log(isLinuxEnvironment);
+    }
+    
+}
+
+```
+
 ## License
 
 MIT
