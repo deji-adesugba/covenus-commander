@@ -828,7 +828,6 @@ app.run();
 
 
 ```
-More Demos can be found in the [tests](https://github.com/deji-adesugba/covenus-commander/tree/master/src/tests) directory.
 
 ## Dependency Injection
 
@@ -942,6 +941,8 @@ class EnvironmentService{
 }
 
 ```
+
+More Demos can be found in the [tests](https://github.com/deji-adesugba/covenus-commander/tree/master/src/tests) directory.
 
 ## License
 
