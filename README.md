@@ -11,7 +11,7 @@ Covenus-commander is a modern command-line application framework for [Node.js](h
 Covenus-commander is built with the awesome, popular, well-known library—[Commander](https://github.com/tj/commander.js). And models it's application programming interface after [Angular](https://github.com/angular/angular) and [Nest](https://github.com/kamilmysliwiec/nest).
 
 
-  ## Installation
+## Installation
 
     $ npm install covenus-commander --save
 
