@@ -15,6 +15,33 @@ Covenus-commander is built with the awesome, popular, well-known library—[Comm
 
     $ npm install covenus-commander --save
 
+## Setting up your Application
+
+Covenus-commander is built with features from ES6. And the easiest way to get going with it is to use [Babel](https://babeljs.io) or [Typescript](http://www.typescriptlang.org).
+
+If using Typescript, your `tsconfig.json` should have the `emitDecoratorMetadata` and `experimentalDecorators` properties set to **true**
+
+```js
+
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es6",
+        "noImplicitAny": false,
+        "noLib": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+    },
+    "exclude": [
+        "node_modules",
+        "src/**/*.spec.ts"
+    ]
+}
+
+```
+
+So lets start with the command-line application use-case scenarios documented on the popular and well-known library [Commander](https://github.com/tj/commander.js) page.
+
 ## Option parsing
 
  Options with covenus-commander are defined with the `@CLIOption` decorator, passing in metadata arguments that serve to define the details and documentation for the options. The example below mimics the option parsing example on the [Commander](https://github.com/tj/commander.js) github page. Equally parsing the args and options from `process.argv` to match.
@@ -855,7 +882,11 @@ Then associate the component's class with your program's decorator through its `
     components: [UserService]   //your cli app components used by your commands, arguments or options must be listed here, so they can be resolved and injected
     
 })
-export class UsersProgram{}
+export class UsersProgram{
+    constructor(userService: UserService){
+        //userService is dynamically injected
+    }
+}
 ```
 
 And like [Angular](https://github.com/angular/angular) and [Nest](https://github.com/kamilmysliwiec/nest), you can also inject your components using other mechanisms.Such as:
@@ -942,7 +973,74 @@ class EnvironmentService{
 
 ```
 
+## Exception Traps:
+Covenus-commander allows you to delegate your exception handling from being within the `execute` or `coercion` methods of your command or argument classes, and option classes respectively, to the `trap` method of your dedicated exception trap classes. So, for example:
+
+ ```js
+ //user-not-found.trap
+ import { Trap, CLIExceptionTrap } from 'covenus-commander';
+
+
+export class UserNotFoundException{}
+
+
+ @Trap(UserNotFoundException)
+export class UserTrap implements CLIExceptionTrap{
+    trap(exception, output){
+        if(exception instanceof UserNotFoundException){
+            output.writeLine('User not found in user directory');
+        }
+    }
+}
+
+ ```
+
+ Now, you only have to associate this exception trap class with your command, argument or option class(es) like so:
+
+  ```js
+
+  import { CLICommand, ProgramOptionArg, UseTraps, Inject } from 'covenus-commander';
+import { UserTrap } from 'user-not-found.trap';
+import { UserService } from 'user-service.component';
+
+@CLICommand({
+    verb: 'getuser',               //this is the command verb that triggers this command from the cli
+    commandDescription: 'get user from the user catalogue',  //this sets the command's help description text
+})
+@UseTraps(UserTrap)
+export class GetUserCommand{
+    private userService;
+
+    constructor(@Inject('user') userService){
+        this.userService = userService;
+    }
+    /*
+        The execute method is invoked when the command verb is detected in the command line arguments parsed by the framework
+        use @ProgramOptionArg parameter decorator to access the value of the options set in the 'options' metadata property of your program class, in this case its the 'config' set in the program class of this command
+    */
+    execute(@ProgramOptionArg('user-id') userId){
+        if(!userId){
+            console.log('error: user id required');
+            return;
+        }
+        this.userService.getUser(userId).then((user) => console.log(`Found user: ${user.name}`));
+    }
+}
+
+ ```
+
+So if `userService.getUser(userId)` throws `UserNotFoundException`, the `UserTrap` exception trap defined earlier will trap that particular exception.
+
+## Exception Trap Scoping
+The exception traps can be command, argument and option scoped. Meaning, that you can set exception traps on the  classes of these covenus-commander elements when you use the `@UseTraps` decorator on them.
+
+Or if you'd like to trap excpetions globally, you can also set traps on your program(`@CLIProgram` marked class). And this will trap any exceptions that gets thrown within the `execute` or `coercion` methods of your command or argument classes, and option classes respectively.
+
+
+
+
 More Demos can be found in the [tests](https://github.com/deji-adesugba/covenus-commander/tree/master/src/tests) directory.
+
 
 ## License
 
