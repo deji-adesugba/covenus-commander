@@ -1,4 +1,6 @@
 # Covenus-Commander
+
+[![Join the chat at https://gitter.im/covenus-commander/Lobby](https://badges.gitter.im/covenus-commander/Lobby.svg)](https://gitter.im/covenus-commander/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Modern, powerful command-line application framework for Node.js using typescript or ES6, inspired by commander, nestjs and angular
 
  [![NPM Version](http://img.shields.io/npm/v/covenus-commander.svg?style=flat)](https://www.npmjs.org/package/covenus-commander)
