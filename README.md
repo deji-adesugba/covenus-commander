@@ -40,7 +40,30 @@ If using Typescript, your `tsconfig.json` should have the `emitDecoratorMetadata
 
 ```
 
-So lets start with the command-line application use-case scenarios documented on the popular and well-known library [Commander](https://github.com/tj/commander.js) page.
+## Setting to Development Environment
+
+While testing your application, you may want to see the stack trace details of runtime exceptions that occur within Coven-commander that it hides from you with the friendly `An unhandled Coven runtime exception occured.` message. To do this simply include the `CovenFactory.switchToDevelopmentMode()` before your call to `CovenFactory.createCLI(...)` in your program class file
+
+```js
+#!/usr/bin/env node
+
+
+const CovenFactory = require('covenus-commander').CovenFactory;
+
+/*
+To see the call stack trace details of runtime exceptions that occur
+uncomment the switch to development mode call
+*/
+CovenFactory.switchToDevelopmentMode();
+
+const app = CovenFactory.createCLI(OptionParsing);
+
+app.run();
+
+```
+
+
+Now, lets start with the command-line application use-case scenarios documented on the popular and well-known library [Commander](https://github.com/tj/commander.js) page, and see how you would handle those same scenarios with Covenus-commander.
 
 ## Option parsing
 
